@@ -21,7 +21,7 @@ mrstModule add incomp
 % To set up a model, we need: a grid, rock properties (permeability), a
 % fluid object with density and viscosity, and boundary conditions.
 gravity reset on
-G          = cartGrid([40, 40, 30], [1, 1, 30]);
+G          = cartGrid([10, 10, 30], [1, 1, 30]);
 G          = computeGeometry(G);
 rock.perm  = repmat(0.1*darcy(), [G.cells.num, 1]);
 fluid      = initSingleFluid('mu' ,    1*centi*poise, ...
