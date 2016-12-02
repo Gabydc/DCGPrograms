@@ -79,7 +79,7 @@ for iter=1:iteration
      r0=r;
      color=[0.1 0.5 0.5];
 
-      ee=abs(r'*r)/nor
+      ee=abs(r'*r)/nor;
      figure(fc)
      hl1=semilogy(iter,ee,'p','Color',color);
      hold on

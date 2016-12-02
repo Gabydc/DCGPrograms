@@ -1,4 +1,4 @@
-function [xf,flag,relres,iter,resvec] = dpcg(A,b,Z,tol,maxit,M1,M2,x0,varargin)
+function [px,flag,relres,iter,resvec] = dpcg(A,b,Z,tol,maxit,M1,M2,x0,varargin)
 %DPCG  Deflated Preconditioned Conjugate Gradients Method.
 %   X = DPCG(A,B,Z) attempts to solve the system of linear equations PA*X=PB for
 %   X. The N-by-N coefficient matrix A must be symmetric and positive
@@ -374,16 +374,15 @@ qb=EI*qb;
 qb=z*qb;
 xf=qb+xf;
 
-
+px=xf;
  else
-    
+     px=x;
     r_comp = b - iterapp('mtimes',afun,atype,afcnstr,xmin,varargin{:});
     if norm(r_comp) <= normr_act
         x = xmin;
         iter = imin;
         relres = norm(r_comp) / n2b;
     else
-        xf = xmin;
         iter = ii;
         relres = normr_act / n2b;
     end

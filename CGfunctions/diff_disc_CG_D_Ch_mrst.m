@@ -11,7 +11,7 @@ s=10;
 
 dir='';
 def=1;
-fc=123;
+fc=15;
 
 [a,b,z]=matrixf(x,y,l,s0,s);
  maxit=500;
@@ -28,7 +28,7 @@ xi1(1:size(b,1),1)=rand;
 [xc,fl0,rr0,it0,rv0] = pcg(a,b',tol,maxit,L,L',xi');
 [x2,iter2,e2,hline2]=CGCh(a,b,xi,maxit,tol,L);
 [x3,iter3,e3,hline3]=DICCG(a,b',xi',maxit,tol,z,L,0,'uno',l,dir,def,fc);
-[xd,fl2,rr2,it2,rv2] = deflation_2(a,b',z,tol,maxit,L,L',xi');
+[xd,fl2,rr2,it2,rv2] = dpcg(a,b',z,tol,maxit,L,L',xi');
 [x4,iter4,e4,hline4]=DCGChF(a,b,xi,maxit,tol,z,L);
 
 ylabel('log(Error)')
