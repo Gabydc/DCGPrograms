@@ -15,7 +15,7 @@ nyi=1;
 nx=sz;
 ny=sz;
 iteration=500;
-e=1;
+e=0;
 num='5';
 
 for k=11
@@ -27,7 +27,7 @@ for per=[3]
 close all
 per
 %Create the directory
-dir='/home/wagm/cortes/Localdisk/Results/ECMOR16/1/';
+dir='/home/wagm/cortes/Localdisk/Results/Solvers/';
 %dir='/dev/media/Sphinx/Doctorado_Delft/marzo16/2016_03/Heterogeneous/POD/';
 %dir='/dev/media/Sphinx/Doctorado_Delft/Research_programs/2016_1_report/2016_02/heterogeneous/matrixE/';
 folder=['size_'   num2str(sz) 'perm_' num2str(per) '_5wells' num2str(k)  ];
@@ -222,12 +222,30 @@ sol = initState(G, W, 0);
 % T = computeTrans(G, rock);
 
 % Reference TPFA
-psolve = @(state) incompTPFA(state, G, hT, fluid, 'wells', W,'MatrixOutput',true);
+  mrstModule add agmg
+  %mrstModile add PCG_ICSol
+   %  solver = AGMGSolverAD('tolerance', 1e-5);
+  % solver = GMRES_ILUSolverAD('tolerance', 1e-5);
+  solver = PCG_ICSolverAD('tolerance', 1e-5);
+%solver = DPCG_ICSolverAD('tolerance', 1e-5);
+ %solver = BackslashSolverAD();
+% pressureSolver = BackslashSolverAD();
+% linsolve = LinearSolverAD('ellipticSolver', pressureSolver);
+%linsolver = LinearSolverAD('ellipticSolver', pressureSolver);
 
+fn = @(A, b) solver.solveLinearSystem(A, b);
+
+
+tic
+%sol = simpleIncompTPFA(initResSol(G, 0.0), G, T, fluid, 'bc', bc,'LinSolve', fn);
+
+psolve = @(state) incompTPFA(state, G, hT, fluid, 'wells', W,'MatrixOutput',true,'LinSolve', fn);
+toc
 sol= psolve(sol);
 p=sol.pressure;
  A=sol.A(1:G.cells.num,1:G.cells.num);
  b=sol.rhs(1:G.cells.num);
+
 % clf;
 
 
@@ -302,14 +320,14 @@ title('bs-ICCG')
 end
 end
 end
-file=['x'];
-filename=[dir file];
-save(filename,file)
-file=['x1'];
-filename=[dir file];
-save(filename,file) 
-% return
-close all
+% file=['x'];
+% filename=[dir file];
+% save(filename,file)
+% file=['x1'];
+% filename=[dir file];
+% save(filename,file) 
+% % return
+% close all
 
 
  iteration=500;
