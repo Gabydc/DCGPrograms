@@ -20,7 +20,7 @@ num='5';
 Lx=sz;
 Ly=sz;
 
-for k=11
+for k=10
     k
 tol=10^-k;
 
@@ -113,7 +113,7 @@ display(fluid);
 
 %% Define well locations, 15 wells
 
-for s=1:15
+for s=1:5
     well(1:4)=-1;
     well(5)=3;
 
@@ -228,9 +228,9 @@ sol = initState(G, W, 0);
   %mrstModile add PCG_ICSol
    %  solver = AGMGSolverAD('tolerance', 1e-5);
   % solver = GMRES_ILUSolverAD('tolerance', 1e-5);
-%  solver = PCG_ICSolverAD('tolerance', 1e-5);
+  solver = PCG_ICSolverAD('tolerance', 1e-5);
 %solver = DPCG_ICSolverAD('tolerance', 1e-5);
- solver = BackslashSolverAD();
+ %solver = BackslashSolverAD();
 % pressureSolver = BackslashSolverAD();
 % linsolve = LinearSolverAD('ellipticSolver', pressureSolver);
 %linsolver = LinearSolverAD('ellipticSolver', pressureSolver);
@@ -332,7 +332,7 @@ close all
  fc=100;
  %e=1;
  nos='5';
-nt=15;
+nt=s;
 nli=4;
      
 solve_DICCG_pod(nos,nt,nli,e,iteration,dir,k);

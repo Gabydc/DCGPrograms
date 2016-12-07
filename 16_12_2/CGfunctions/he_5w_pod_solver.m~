@@ -22,7 +22,7 @@ for k=11
     k
 tol=10^-k;
 
-for per=[1]
+for per=[3]
    
 close all
 per
@@ -176,10 +176,9 @@ sol = initState(G, W, 0);
 % Reference TPFA
   mrstModule add agmg
   %mrstModile add PCG_ICSol
-     solver = AGMGSolverAD('tolerance', 1e-5);
-  % solver = GMRES_ILUSolverAD('tolerance', 1e-5);
-  % solver = CPRSolverAD();
- % solver = PCG_ICSolverAD('tolerance', 1e-5);
+   %  solver = AGMGSolverAD('tolerance', 1e-5);
+   solver = GMRES_ILUSolverAD('tolerance', 1e-5);
+  %solver = PCG_ICSolverAD('tolerance', 1e-5);
 %solver = DPCG_ICSolverAD('tolerance', 1e-5);
  %solver = BackslashSolverAD();
 % pressureSolver = BackslashSolverAD();
@@ -198,14 +197,10 @@ sol= psolve(sol);
 p=sol.pressure;
  A=sol.A(1:G.cells.num,1:G.cells.num);
  b=sol.rhs(1:G.cells.num);
- figure(150)
-[ht]=plotingsolution(G,W,'s', sol.pressure,1) ;
-colorbar
-title('Solution')
 % clf;
 
 
-return
+
 %plotWell(G, W);
 view(0,90)  
 %%Sol ICCG

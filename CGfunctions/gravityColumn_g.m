@@ -1,3 +1,6 @@
+close all
+clear all
+
 %% Gravity Column
 % In this example, we introduce a simple pressure solver and use it to
 % solve the single-phase pressure equation
@@ -21,7 +24,7 @@ mrstModule add incomp
 % To set up a model, we need: a grid, rock properties (permeability), a
 % fluid object with density and viscosity, and boundary conditions.
 gravity reset on
-G          = cartGrid([300, 300, 15], [1, 1, 30]);
+G          = cartGrid([10, 10, 100], [10, 10, 100]);
 G          = computeGeometry(G);
 rock.perm  = repmat(0.1*darcy(), [G.cells.num, 1]);
 fluid      = initSingleFluid('mu' ,    1*centi*poise, ...
@@ -35,16 +38,12 @@ bc  = pside([], G, 'TOP', 100.*barsa());
 % equation. This is done in two steps: first we compute the
 % transmissibilities and then we assemble and solve the corresponding
 % discrete system.
-  mrstModule add agmg
-  %mrstModile add PCG_ICSol
+   %  mrstModule add agmg
    %  solver = AGMGSolverAD('tolerance', 1e-5);
-  % solver = GMRES_ILUSolverAD('tolerance', 1e-5);
-%  solver = PCG_ICSolverAD('tolerance', 1e-5);
-solver = DPCG_ICSolverAD('tolerance', 1e-5);
- %solver = BackslashSolverAD();
-% pressureSolver = BackslashSolverAD();
-% linsolve = LinearSolverAD('ellipticSolver', pressureSolver);
-%linsolver = LinearSolverAD('ellipticSolver', pressureSolver);
+   %  solver = GMRES_ILUSolverAD('tolerance', 1e-5);
+     solver = PCG_ICSolverAD('tolerance', 1e-5);
+   % solver = BackslashSolverAD();
+
 
 fn = @(A, b) solver.solveLinearSystem(A, b);
 T   = simpleComputeTrans(G, rock);
